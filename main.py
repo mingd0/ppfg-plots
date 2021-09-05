@@ -1,4 +1,8 @@
-from config import BPWA_FILENAME, MEMORY_DATA_FILENAME, EVENTS_FILENAME
+from config import (BPWA_FILENAME,
+                    MEMORY_DATA_FILENAME,
+                    EVENTS_FILENAME,
+                    OUTPUT_FILENAME)
+
 from plot import create_drilling_plot
 from process_data import process_memory_data, process_rt_data, process_events
 
@@ -19,7 +23,9 @@ def main():
     df_rt = process_rt_data(bpwa_filename)
     df_events = process_events(events_filename)
 
-    create_drilling_plot(df_rt, df_mem, df_events)
+    fig = create_drilling_plot(df_rt, df_mem, df_events)
+    fig.show()
+    fig.write_html(os.path.join(dirname, f'outputs/{OUTPUT_FILENAME}'))
 
 
 if __name__ == "__main__":
