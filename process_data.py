@@ -4,7 +4,14 @@ import numpy as np
 import pytz
 import lasio
 
+""" Import and process data from various sources and return Pandas
+Dataframes. Sources are BPWA .csv file, memory data .las file, and user-defined
+events .csv file.
+"""
 
+
+# Import and clean memory data from .las file. Set datetime index and convert
+# to UTC.
 def process_memory_data(filename):
     df = import_memory_data(filename)
     df = clean_data(df)
@@ -13,6 +20,8 @@ def process_memory_data(filename):
     return df
 
 
+# Import and clean realtime data from .csv file. Set index to datetime on
+# import. Convert to UTC.
 def process_rt_data(filename):
     df = import_bpwa_data(filename)
     df = clean_data(df)
@@ -20,6 +29,7 @@ def process_rt_data(filename):
     return df
 
 
+# Import events file. Set datetime index and convert to UTC.
 def process_events(filename):
     df = pd.read_csv(filename)
     df = set_time_index(df, 'time')
@@ -27,6 +37,8 @@ def process_events(filename):
     return df
 
 
+# Helper method to set Dataframe index to datetime based on some key (column
+# name). Localize to US central time.
 def set_time_index(df, key):
     df = df.set_index(key)
     df.index = pd.to_datetime(df.index)
@@ -34,12 +46,12 @@ def set_time_index(df, key):
     return df
 
 
+# Convert datetime index to UTC. Assumes TZ aware.
 def convert_index_utc(df):
     df.index = df.index.tz_convert(pytz.UTC)
     return df
 
 
-# Could pull out dateparse and pass in as function
 def import_bpwa_data(filename):
     """ Imports data from csv format into DataFrame, setting time as index.
     Returns DataFrame.
@@ -56,6 +68,7 @@ def import_bpwa_data(filename):
     return df
 
 
+# Cleans data, replacing -999.25 null value with np.nan
 def clean_data(df):
     return df.replace(-999.25, np.nan)
 
