@@ -4,6 +4,9 @@ import numpy as np
 import pytz
 import lasio
 
+from confi import RT_MNEMONICS as mnem_rt
+from config import MEM_MNEMONICS as mnem_mem
+
 """ Import and process data from various sources and return Pandas
 Dataframes. Sources are BPWA .csv file, memory data .las file, and user-defined
 events .csv file.
@@ -15,7 +18,7 @@ events .csv file.
 def process_memory_data(filename):
     df = import_memory_data(filename)
     df = clean_data(df)
-    df = set_time_index(df, 'TIME')
+    df = set_time_index(df, mnem_rt['time'])
     df = convert_index_utc(df)
     return df
 
@@ -32,7 +35,7 @@ def process_rt_data(filename):
 # Import events file. Set datetime index and convert to UTC.
 def process_events(filename):
     df = pd.read_csv(filename)
-    df = set_time_index(df, 'time')
+    df = set_time_index(df, mnem_mem['time'])
     df = convert_index_utc(df)
     return df
 
@@ -62,9 +65,9 @@ def import_bpwa_data(filename):
 
     df = pd.read_csv(filename,
                      skiprows=[1],
-                     index_col='TIME',
+                     index_col=mnem_rt['time'],
                      date_parser=dateparse,
-                     parse_dates=['TIME'])
+                     parse_dates=[mnem_rt['time']])
     return df
 
 
@@ -76,6 +79,3 @@ def clean_data(df):
 def import_memory_data(filename):
     las = lasio.read(filename)
     return las.df()
-
-
-# events['y'] = df_bpwa.loc[events.index, 'GS_DBTM']

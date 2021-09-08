@@ -1,6 +1,8 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from config import TITLE, ESD_MARKER_SIZE
+from config import RT_MNEMONICS as mnem_rt
+from config import MEM_MNEMONICS as mnem_mem
 
 """ Creates plot with Plotly based on three dataframes: realtime data (from
 BPWA), memory data (from .las file) and user-defined 'events' (.csv).
@@ -23,14 +25,14 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                         ])
 
     # Bit depth
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['GS_DBTM'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['bit_depth']],
                              mode='lines',
                              name='Bit Depth'),
                   row=1, col=1
                   )
 
     # Block position
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['GS_BPOS'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['block_position']],
                              mode='lines',
                              name='BPOS'),
                   secondary_y=False,
@@ -38,7 +40,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # Hookload
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['GS_HKLDF'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['hookload']],
                              mode='lines',
                              name='HKLD'),
                   secondary_y=True,
@@ -46,7 +48,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # Standpipe pressure
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['GS_SPPA'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['spp']],
                              mode='lines',
                              name='SPPA'),
                   secondary_y=False,
@@ -55,7 +57,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # Realtime ECD
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ECD_RT'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['ecd_rt']],
                              mode='lines',
                              name='ECD'),
                   secondary_y=True,
@@ -64,7 +66,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # ESD_MIN
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ESD_MIN'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_min']],
                              mode='markers',
                              name='ESD_MIN',
                              marker_size=ESD_MARKER_SIZE),
@@ -74,7 +76,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # ESD_MAX
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ESD_MAX'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_max']],
                              mode='markers',
                              name='ESD_MAX',
                              marker_size=ESD_MARKER_SIZE),
@@ -84,7 +86,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # ESD_AVG
-    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ESD'],
+    fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_avg']],
                              mode='markers',
                              name='ESD_AVG',
                              marker_size=ESD_MARKER_SIZE),
@@ -94,7 +96,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                   )
 
     # Memory ECD
-    fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ECD'],
+    fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem[mnem_mem['ecd']],
                              mode='lines',
                              name='Memory ECD'),
                   secondary_y=True,
@@ -117,7 +119,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
     fig.update_layout(title=TITLE, title_x=0.5)
 
     # Add annotations
-    df_events['y'] = df_rt.loc[df_events.index, 'GS_DBTM']
+    df_events['y'] = df_rt.loc[df_events.index, mnem_rt['bit_depth']]
     annotations = [{
         'x': df_events.index[i],
         'y': df_events.iloc[i, 1],
