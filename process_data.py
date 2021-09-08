@@ -4,7 +4,7 @@ import numpy as np
 import pytz
 import lasio
 
-from confi import RT_MNEMONICS as mnem_rt
+from config import RT_MNEMONICS as mnem_rt
 from config import MEM_MNEMONICS as mnem_mem
 
 """ Import and process data from various sources and return Pandas
