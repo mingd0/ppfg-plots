@@ -1,8 +1,5 @@
 # ppfg-plots
 
-Description/purpose
-Instructions
-
-
-Chai is working on this now.
-Test to see if I need a code review.
+1. Description/purpose
+2. Instructions
+3. Contributing
