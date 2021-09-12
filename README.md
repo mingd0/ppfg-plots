@@ -5,7 +5,7 @@ The purpose of this project is to create interactive plots with memory and
 realtime data. This automates some of the excel-based workflow the ppfg team
 was following, and creates an interactive html plot that can be saved and
 distributed for analysis and/or record keeping.<br>
-![ppfg-plot]('img/ppfg-plot.png')
+![ppfg-plot](img/ppfg-plot.png)
 
 ### First Time Setup
 1. Install `python3` from bp software center.
