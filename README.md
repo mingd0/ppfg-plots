@@ -67,4 +67,9 @@ To create a new branch and switch to it:
 ```
 git checkout -b <new_branch_name>
 ```
-Chai was here.
+To create a request to merge branch, first swap back to `main`, then merge:
+```
+git checkout main
+git merge development
+```
+Create pull request from repository webpage.
