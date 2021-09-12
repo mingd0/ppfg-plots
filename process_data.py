@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 import pandas as pd
 import numpy as np
 import pytz
@@ -16,6 +17,8 @@ events .csv file.
 # Import and clean memory data from .las file. Set datetime index and convert
 # to UTC.
 def process_memory_data(filename):
+    if not filename:
+        return
     df = import_memory_data(filename)
     df = clean_data(df)
     df = set_time_index(df, mnem_rt['time'])
@@ -26,6 +29,8 @@ def process_memory_data(filename):
 # Import and clean realtime data from .csv file. Set index to datetime on
 # import. Convert to UTC.
 def process_rt_data(filename):
+    if not filename:
+        return
     df = import_bpwa_data(filename)
     df = clean_data(df)
     df = convert_index_utc(df)
@@ -34,6 +39,8 @@ def process_rt_data(filename):
 
 # Import events file. Set datetime index and convert to UTC.
 def process_events(filename):
+    if not filename:
+        return
     df = pd.read_csv(filename)
     df = set_time_index(df, mnem_mem['time'])
     df = convert_index_utc(df)
@@ -79,3 +86,10 @@ def clean_data(df):
 def import_memory_data(filename):
     las = lasio.read(filename)
     return las.df()
+
+
+def get_filepath(path, filename):
+    dirname = os.path.dirname(__file__)
+    if filename:
+        return os.path.join(dirname, path, filename)
+    return
