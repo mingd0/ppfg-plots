@@ -133,4 +133,6 @@ def create_drilling_plot(df_rt, df_mem, df_events):
         } for i in range(len(df_events.index))]
         fig.update_layout({"annotations": annotations})
 
+    fig.update_layout(template='plotly_dark', hovermode='x unified')
+
     return fig
