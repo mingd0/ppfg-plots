@@ -134,11 +134,25 @@ def create_drilling_plot(df_rt, df_mem, df_events):
 
     if df_events is not None:
         # Add annotations
+        adjustment = 0.2 * (df_rt[mnem_rt['bit_depth']].max()
+                            - df_rt[mnem_rt['bit_depth']].min())
         df_events['y'] = df_rt.loc[df_events.index, mnem_rt['bit_depth']]
+        df_events.loc[
+            df_events[
+                df_events['y'] < df_rt[mnem_rt['bit_depth']]
+                .mean()]
+            .index, 'y_adj'] = df_events['y'] + adjustment
+        df_events.loc[
+            df_events[
+                df_events['y'] > df_rt[mnem_rt['bit_depth']]
+                .mean()]
+            .index, 'y_adj'] = df_events['y'] - adjustment
+
         annotations = [{
             'x': df_events.index[i],
-            'y': df_events.iloc[i, 1],
+            'y': df_events.iloc[i, 2],
             'text': df_events.iloc[i, 0],
+            'showarrow': False
         } for i in range(len(df_events.index))]
         fig.update_layout({"annotations": annotations})
 

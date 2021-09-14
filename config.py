@@ -11,7 +11,7 @@ OUTPUTS_PATH = './outputs/'
 # Use None type if file does not exist
 BPWA_FILENAME = '20210910_132929_ST00BP00.csv'
 MEMORY_FILENAME = None
-EVENTS_FILENAME = None
+EVENTS_FILENAME = 'events.csv'
 # No spaces or slashes allowed in output file
 # Recommended format:WellName_DecimalHoleSize_Mem_RT_Data.html
 OUTPUT_FILENAME = 'Isabela-3_12.25inHS_Mem_RT_Data.html'
