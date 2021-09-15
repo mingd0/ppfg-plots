@@ -27,6 +27,8 @@ RT_MNEMONICS = {
   'time': 'TIME',
   'bit_depth': 'GS_DBTM',
   'block_position': 'GS_BPOS',
+  'rpm': 'GS_RPM',
+  'torque': 'GS_TDTRQ',
   'hookload': 'GS_HKLDF',
   'spp': 'GS_SPPA',
   'ecd_rt': 'ECD_RT',

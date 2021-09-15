@@ -41,6 +41,24 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       secondary_y=False,
                       row=3, col=1
                       )
+        # RPM
+        fig.add_trace(go.Scatter(x=df_rt.index,
+                                 y=df_rt[mnem_rt['rpm']],
+                                 mode='lines',
+                                 name='RPM',
+                                 hovertemplate='%{y:.0f}'),
+                      secondary_y=False,
+                      row=3, col=1
+                      )
+        # Torque
+        fig.add_trace(go.Scatter(x=df_rt.index,
+                                 y=df_rt[mnem_rt['torque']],
+                                 mode='lines',
+                                 name='TQ',
+                                 hovertemplate='%{y:.1f} kft-lbs'),
+                      secondary_y=False,
+                      row=3, col=1
+                      )
 
         # Hookload
         fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['hookload']],
@@ -125,7 +143,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                      range=[(ecd_mean - 1), (ecd_mean + 1)],
                      title_text='ECD/ESD/MW (ppg)')
     fig.update_yaxes(row=3, col=1, secondary_y=False,
-                     title_text='Block Position (ft)')
+                     title_text='Block Position (ft)/RPM/Torque (kft-lbs)')
     fig.update_yaxes(row=3, col=1, secondary_y=True,
                      title_text='Hookload (klbs)')
 
@@ -139,13 +157,11 @@ def create_drilling_plot(df_rt, df_mem, df_events):
         df_events['y'] = df_rt.loc[df_events.index, mnem_rt['bit_depth']]
         df_events.loc[
             df_events[
-                df_events['y'] < df_rt[mnem_rt['bit_depth']]
-                .mean()]
+                df_events['y'] < df_rt[mnem_rt['bit_depth']].mean()]
             .index, 'y_adj'] = df_events['y'] + adjustment
         df_events.loc[
             df_events[
-                df_events['y'] > df_rt[mnem_rt['bit_depth']]
-                .mean()]
+                df_events['y'] > df_rt[mnem_rt['bit_depth']].mean()]
             .index, 'y_adj'] = df_events['y'] - adjustment
 
         annotations = [{
