@@ -78,6 +78,16 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       # yaxis="",
                       row=2, col=1
                       )
+        
+        # Wellhead Pressure
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['whp']],
+                                 mode='lines',
+                                 name='WHP',
+                                 hovertemplate='%{y:,.0f} psi'),
+                      secondary_y=False,
+                      # yaxis="",
+                      row=2, col=1
+                      )
 
         # Realtime ECD
         fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['ecd_rt']],
