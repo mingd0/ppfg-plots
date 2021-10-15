@@ -25,7 +25,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                         ])
     if df_rt is not None:
         # Bit depth
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['bit_depth']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['bit_depth'],
                                  mode='lines',
                                  name='Bit Depth',
                                  hovertemplate='%{y:,.0f} ft MD'),
@@ -34,7 +34,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
 
         # Block position
         fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt[mnem_rt['block_position']],
+                                 y=df_rt['block_position'],
                                  mode='lines',
                                  name='BPOS',
                                  hovertemplate='%{y:.1f} ft'),
@@ -43,7 +43,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
         # RPM
         fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt[mnem_rt['rpm']],
+                                 y=df_rt['rpm'],
                                  mode='lines',
                                  name='RPM',
                                  hovertemplate='%{y:.0f}'),
@@ -52,7 +52,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
         # Torque
         fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt[mnem_rt['torque']],
+                                 y=df_rt['torque'],
                                  mode='lines',
                                  name='TQ',
                                  hovertemplate='%{y:.1f} kft-lbs'),
@@ -61,7 +61,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # Hookload
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['hookload']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['hookload'],
                                  mode='lines',
                                  name='HKLD',
                                  hovertemplate='%{y:.0f} klbs'),
@@ -70,7 +70,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # Standpipe pressure
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['spp']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['spp'],
                                  mode='lines',
                                  name='SPPA',
                                  hovertemplate='%{y:,.0f} psi'),
@@ -80,7 +80,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
         
         # Wellhead Pressure
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['whp']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['whp'],
                                  mode='lines',
                                  name='WHP',
                                  hovertemplate='%{y:,.0f} psi'),
@@ -90,7 +90,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # Realtime ECD
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['ecd_rt']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ecd_rt'],
                                  mode='lines',
                                  name='ECD',
                                  hovertemplate='%{y:.2f} ppg'),
@@ -100,7 +100,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # ESD_MIN
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_min']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_min'],
                                  mode='markers',
                                  name='ESD_MIN',
                                  marker_size=ESD_MARKER_SIZE,
@@ -111,7 +111,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # ESD_MAX
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_max']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_max'],
                                  mode='markers',
                                  name='ESD_MAX',
                                  marker_size=ESD_MARKER_SIZE,
@@ -122,7 +122,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       )
 
         # ESD_AVG
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt[mnem_rt['esd_avg']],
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_avg'],
                                  mode='markers',
                                  name='ESD_AVG',
                                  marker_size=ESD_MARKER_SIZE,
@@ -134,7 +134,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
 
     if df_mem is not None:
         # Memory ECD
-        fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem[mnem_mem['ecd']],
+        fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ecd_mem'],
                                  mode='lines',
                                  name='Memory ECD',
                                  hovertemplate='%{y:.2f} ppg'),
@@ -148,7 +148,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
     fig.update_yaxes(row=2, col=1, secondary_y=False,
                      title_text='Pressure (psi)')
     # Use mean ECD to configure axis range
-    ecd_mean = round(df_rt[mnem_rt['ecd_rt']].mean(), 1)
+    ecd_mean = round(df_rt['ecd_rt'].mean(), 1)
     fig.update_yaxes(row=2, col=1, secondary_y=True,
                      range=[(ecd_mean - 1), (ecd_mean + 1)],
                      title_text='ECD/ESD/MW (ppg)')
@@ -162,16 +162,16 @@ def create_drilling_plot(df_rt, df_mem, df_events):
 
     if df_events is not None:
         # Add annotations
-        adjustment = 0.2 * (df_rt[mnem_rt['bit_depth']].max()
-                            - df_rt[mnem_rt['bit_depth']].min())
-        df_events['y'] = df_rt.loc[df_events.index, mnem_rt['bit_depth']]
+        adjustment = 0.2 * (df_rt['bit_depth'].max()
+                            - df_rt['bit_depth'].min())
+        df_events['y'] = df_rt.loc[df_events.index, 'bit_depth']
         df_events.loc[
             df_events[
-                df_events['y'] < df_rt[mnem_rt['bit_depth']].mean()]
+                df_events['y'] < df_rt['bit_depth'].mean()]
             .index, 'y_adj'] = df_events['y'] + adjustment
         df_events.loc[
             df_events[
-                df_events['y'] > df_rt[mnem_rt['bit_depth']].mean()]
+                df_events['y'] > df_rt['bit_depth'].mean()]
             .index, 'y_adj'] = df_events['y'] - adjustment
 
         annotations = [{
