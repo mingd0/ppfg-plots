@@ -34,6 +34,13 @@ def process_rt_data(filename):
     df = import_bpwa_data(filename)
     df = clean_data(df)
     df = convert_index_utc(df)
+    
+    # Swap mnemonics keys/values and rename columns to standardized names
+    col_map = {}
+    for key, value in mnem_rt.items(): 
+        col_map[value] = key
+    df = df.rename(columns=col_map)
+    
     return df
 
 
@@ -67,13 +74,13 @@ def import_bpwa_data(filename):
     Returns DataFrame.
     """
 
-    def dateparse(s):
-        return datetime.strptime(s, '%Y-%m-%dT%H:%M:%S.%f%z')
+    # def dateparse(s):
+    #     return datetime.strptime(s, '%Y-%m-%dT%H:%M:%S.%f%z')
 
     df = pd.read_csv(filename,
                      skiprows=[1],
                      index_col=mnem_rt['time'],
-                     date_parser=dateparse,
+                    #  date_parser=dateparse,
                      parse_dates=[mnem_rt['time']])
     return df
 
