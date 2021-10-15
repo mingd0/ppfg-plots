@@ -23,6 +23,7 @@ def process_memory_data(filename):
     df = clean_data(df)
     df = set_time_index(df, mnem_rt['time'])
     df = convert_index_utc(df)
+    df = rename_cols(df, mnem_mem)
     return df
 
 
@@ -34,13 +35,7 @@ def process_rt_data(filename):
     df = import_bpwa_data(filename)
     df = clean_data(df)
     df = convert_index_utc(df)
-    
-    # Swap mnemonics keys/values and rename columns to standardized names
-    col_map = {}
-    for key, value in mnem_rt.items(): 
-        col_map[value] = key
-    df = df.rename(columns=col_map)
-    
+    df = rename_cols(df, mnem_rt)
     return df
 
 
@@ -100,3 +95,10 @@ def get_filepath(path, filename):
     if filename:
         return os.path.join(dirname, path, filename)
     return
+
+def rename_cols(df, mnem): 
+    # Swap mnemonics keys/values and rename columns to standardized names
+    col_map = {}
+    for key, value in mnem.items(): 
+        col_map[value] = key
+    return df.rename(columns=col_map)

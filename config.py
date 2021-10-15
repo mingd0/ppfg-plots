@@ -53,7 +53,7 @@ RT_MNEMONICS = {
 
 # Memory (LAS File)
 MEM_MNEMONICS = {
-  'time': 'time',
-  'ecd_mem': 'ECD',
+  'time': 'TIME',
+  'ecd_mem': 'ECD:1',
   'mwd_temp_mem': 'TEMP_DNI'
 }
