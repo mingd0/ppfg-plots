@@ -1,8 +1,6 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from config import TITLE, ESD_MARKER_SIZE
-from config import RT_MNEMONICS as mnem_rt
-from config import MEM_MNEMONICS as mnem_mem
+from config import TITLE, ESD_MARKER_SIZE, MAX_PP_OH
 
 """ Creates plot with Plotly based on three dataframes: realtime data (from
 BPWA), memory data (from .las file) and user-defined 'events' (.csv).
@@ -19,17 +17,37 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                         shared_xaxes=True,
                         vertical_spacing=0.02,
                         specs=[
-                            [{"secondary_y": False}],
+                            [{"secondary_y": True}],
                             [{"secondary_y": True}],
                             [{"secondary_y": True}]
                         ])
+
     if df_rt is not None:
         # Bit depth
         fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['bit_depth'],
                                  mode='lines',
                                  name='Bit Depth',
                                  hovertemplate='%{y:,.0f} ft MD'),
-                      row=1, col=1
+                      row=1, col=1, 
+                      secondary_y=False
+                      )
+                      
+        # Gas
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['gas'],
+                                 mode='lines',
+                                 name='Gas',
+                                 hovertemplate='%{y:,.1f} units'),
+                      row=1, col=1, 
+                      secondary_y=True,
+                      )
+
+        # MWD Temperature (RT)
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mwd_temp'],
+                                 mode='markers',
+                                 name='MWD Temp (RT)',
+                                 hovertemplate='%{y:,.0f}°F'),
+                      row=1, col=1, 
+                      secondary_y=True
                       )
 
         # Block position
@@ -41,6 +59,7 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       secondary_y=False,
                       row=3, col=1
                       )
+
         # RPM
         fig.add_trace(go.Scatter(x=df_rt.index,
                                  y=df_rt['rpm'],
@@ -66,6 +85,24 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                                  name='HKLD',
                                  hovertemplate='%{y:.0f} klbs'),
                       secondary_y=True,
+                      row=3, col=1
+                      )
+
+        # WOB
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['wob'],
+                                 mode='lines',
+                                 name='WOB',
+                                 hovertemplate='%{y:.1f} klbs'),
+                      secondary_y=False,
+                      row=3, col=1
+                      )
+
+        # ROP
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['rop'],
+                                 mode='lines',
+                                 name='ROP',
+                                 hovertemplate='%{y:.0f} klbs'),
+                      secondary_y=False,
                       row=3, col=1
                       )
 
@@ -132,6 +169,26 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       row=2, col=1
                       )
 
+        # MW In 
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_in'],
+                                 mode='lines',
+                                 name='MW In',
+                                 hovertemplate='%{y:.2f} ppg'),
+                      secondary_y=True,
+                      # yaxis="",
+                      row=2, col=1
+                      )
+
+        # MW Out
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_out'],
+                                 mode='lines',
+                                 name='MW Out',
+                                 hovertemplate='%{y:.2f} ppg'),
+                      secondary_y=True,
+                      # yaxis="",
+                      row=2, col=1
+                      )
+        
     if df_mem is not None:
         # Memory ECD
         fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ecd_mem'],
@@ -143,8 +200,20 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       row=2, col=1
                       )
 
+        # MWD Temperature (Memory)
+        fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['mwd_temp_mem'],
+                                 mode='markers',
+                                 name='MWD Temp (Mem)',
+                                 hovertemplate='%{y:,.0f}°F'),
+                      row=1, col=1, 
+                      secondary_y=True
+                      )
+
     # Add axis titles
-    fig.update_yaxes(row=1, col=1, title_text='Bit Depth (ft MD)')
+    fig.update_yaxes(row=1, col=1, secondary_y=False,
+                     title_text='Bit Depth (ft MD)')
+    fig.update_yaxes(row=1, col=1, secondary_y=True,
+                     title_text='Gas(units)/Temperature(°F)')
     fig.update_yaxes(row=2, col=1, secondary_y=False,
                      title_text='Pressure (psi)')
     # Use mean ECD to configure axis range
@@ -153,9 +222,24 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                      range=[(ecd_mean - 1), (ecd_mean + 1)],
                      title_text='ECD/ESD/MW (ppg)')
     fig.update_yaxes(row=3, col=1, secondary_y=False,
-                     title_text='Block Position (ft)/RPM/Torque (kft-lbs)')
+                     range=[0, 300],
+                     title_text='BPOS (ft)/RPM/TQ (kft-lbs)/WOB (klbs)')
     fig.update_yaxes(row=3, col=1, secondary_y=True,
                      title_text='Hookload (klbs)')
+
+    # Horizontal line to show max pore pressure
+    fig.add_hline(y=MAX_PP_OH, row=2, col=1, secondary_y=True) 
+    fig.add_annotation(
+        text="Max PP in Open Hole",
+        x=max(df_rt.index.max(), df_mem.index.max()),
+        y=MAX_PP_OH,
+        yshift=-10, 
+        xshift=10,
+        secondary_y=True,
+        row=2, col=1, 
+        showarrow=False, 
+        xanchor='right'
+    )
 
     # Add graph title
     fig.update_layout(title=TITLE, title_x=0.5)
