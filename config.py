@@ -14,10 +14,10 @@ MEMORY_FILENAME = 'MC_562_I3_ST00BP01_Digital Data_26Sep-02Oct.las'
 EVENTS_FILENAME = None
 # No spaces or slashes allowed in output file
 # Recommended format:WellName_DecimalHoleSize_Mem_RT_Data.html
-OUTPUT_FILENAME = 'Isabela-3_12.25inHS_Mem_RT_Data.html'
+OUTPUT_FILENAME = 'Isabela-3_12.25inBypassHS_Mem_RT_Data.html'
 
 """ Plotting Preferences """
-TITLE = 'Isabela-3 12-1/4in Hole Section - RT/MEM Data'
+TITLE = 'Isabela-3 12-1/4in Bypass Hole Section - RT/MEM Data'
 ESD_MARKER_SIZE = 10
 MAX_PP_OH = 12.6 # Max pore pressure in open hole
 
