@@ -36,6 +36,7 @@ def process_rt_data(filename):
     df = clean_data(df)
     df = convert_index_utc(df)
     df = rename_cols(df, mnem_rt)
+    df = flowrate_multiplier(df, 100)
     return df
 
 
@@ -102,3 +103,7 @@ def rename_cols(df, mnem):
     for key, value in mnem.items(): 
         col_map[value] = key
     return df.rename(columns=col_map)
+
+def flowrate_multiplier(df, multiplier): 
+    df['mfia_multiplier'] = df['mfia'] / multiplier
+    return df

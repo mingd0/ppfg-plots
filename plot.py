@@ -50,6 +50,15 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       secondary_y=True
                       )
 
+        # Gamma Ray (Mem) - does this make sense on a time plot? 
+        # fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['gamma_ray'],
+        #                          mode='lines',
+        #                          name='Gamma Ray',
+        #                          hovertemplate='%{y:,.0f} gAPI'),
+        #               row=1, col=1, 
+        #               secondary_y=True
+        #               )
+
         # Block position
         fig.add_trace(go.Scatter(x=df_rt.index,
                                  y=df_rt['block_position'],
@@ -115,6 +124,16 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                       # yaxis="",
                       row=2, col=1
                       )
+
+        # Surface backpressure (SBP)
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['sbp'],
+                                 mode='lines',
+                                 name='SBP',
+                                 hovertemplate='%{y:,.0f} psi'),
+                      secondary_y=False,
+                      # yaxis="",
+                      row=2, col=1
+                      )
         
         # Wellhead Pressure
         fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['whp'],
@@ -122,6 +141,16 @@ def create_drilling_plot(df_rt, df_mem, df_events):
                                  name='WHP',
                                  hovertemplate='%{y:,.0f} psi'),
                       secondary_y=False,
+                      # yaxis="",
+                      row=2, col=1
+                      )
+
+        # Flow rate (x100)
+        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mfia_multiplier'],
+                                 mode='lines',
+                                 name='Flow Rate',
+                                 hovertemplate='%{y:.2f}x100 gpm'),
+                      secondary_y=True,
                       # yaxis="",
                       row=2, col=1
                       )
@@ -211,7 +240,8 @@ def create_drilling_plot(df_rt, df_mem, df_events):
 
     # Add axis titles
     fig.update_yaxes(row=1, col=1, secondary_y=False,
-                     title_text='Bit Depth (ft MD)')
+                     title_text='Bit Depth (ft MD)', 
+                     autorange='reversed')
     fig.update_yaxes(row=1, col=1, secondary_y=True,
                      title_text='Gas(units)/Temperature(°F)')
     fig.update_yaxes(row=2, col=1, secondary_y=False,
@@ -219,11 +249,12 @@ def create_drilling_plot(df_rt, df_mem, df_events):
     # Use mean ECD to configure axis range
     ecd_mean = round(df_rt['ecd_rt'].mean(), 1)
     fig.update_yaxes(row=2, col=1, secondary_y=True,
-                     range=[(ecd_mean - 1), (ecd_mean + 1)],
-                     title_text='ECD/ESD/MW (ppg)')
+                    #  range=[(ecd_mean - 1), (ecd_mean + 1)],
+                     range=[8, 14],
+                     title_text='ECD/ESD/MW (ppg)/Flow x100 (gpm)')
     fig.update_yaxes(row=3, col=1, secondary_y=False,
                      range=[0, 300],
-                     title_text='BPOS (ft)/RPM/TQ (kft-lbs)/WOB (klbs)')
+                     title_text='BPOS (ft)/RPM/TQ (kft-lbs)/WOB (klbs)/ROP (ft/hr)')
     fig.update_yaxes(row=3, col=1, secondary_y=True,
                      title_text='Hookload (klbs)')
 

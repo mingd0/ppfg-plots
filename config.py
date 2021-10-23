@@ -55,5 +55,6 @@ RT_MNEMONICS = {
 MEM_MNEMONICS = {
   'time': 'TIME',
   'ecd_mem': 'ECD:1',
-  'mwd_temp_mem': 'TEMP_DNI'
+  'mwd_temp_mem': 'TEMP_DNI',
+  # 'gamma_ray': 'GR_CAL'
 }
