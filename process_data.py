@@ -7,6 +7,7 @@ import lasio
 
 from config import RT_MNEMONICS as mnem_rt
 from config import MEM_MNEMONICS as mnem_mem
+from config import MFIA_MULTIPLIER
 
 """ Import and process data from various sources and return Pandas
 Dataframes. Sources are BPWA .csv file, memory data .las file, and user-defined
@@ -33,11 +34,13 @@ def process_rt_data(filename):
     if not filename:
         return
     df = import_bpwa_data(filename)
+    units = import_bpwa_units(filename)
     df = clean_data(df)
     df = convert_index_utc(df)
     df = rename_cols(df, mnem_rt)
-    df = flowrate_multiplier(df, 100)
-    return df
+    units = rename_cols(units, mnem_rt).iloc[0].to_dict()
+    df = flowrate_multiplier(df, MFIA_MULTIPLIER)
+    return df, units
 
 
 # Import events file. Set datetime index and convert to UTC.
@@ -80,6 +83,10 @@ def import_bpwa_data(filename):
                      parse_dates=[mnem_rt['time']])
     return df
 
+def import_bpwa_units(filename): 
+
+    units = pd.read_csv(filename, nrows=1)
+    return units
 
 # Cleans data, replacing -999.25 null value with np.nan
 def clean_data(df):
