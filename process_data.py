@@ -19,7 +19,7 @@ events .csv file.
 # to UTC.
 def process_memory_data(filename):
     if not filename:
-        return
+        return (None, None)
     df, units = import_memory_data(filename)
     df = clean_data(df)
     df = set_time_index(df, mnem_rt['time'])

@@ -24,34 +24,43 @@ def create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events):
 
     if df_rt is not None:
         # Bit depth
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['bit_depth'],
-                                 mode='lines',
-                                 name='Bit Depth',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_rt['bit_depth'])
-                                 ),
-                      row=1, col=1, 
-                      secondary_y=False
-                      )
-                      
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['bit_depth'],
+                                    mode='lines',
+                                    name='Bit Depth',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_rt['bit_depth'])
+                                    ),
+                        row=1, col=1, 
+                        secondary_y=False
+                        )
+        except KeyError: 
+            pass 
+
         # Gas
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['gas'],
-                                 mode='lines',
-                                 name='Gas',
-                                 hovertemplate=('%{y:,.1f}' + ' ' + units_rt['gas']), 
-                                 ),
-                      row=1, col=1, 
-                      secondary_y=True,
-                      )
+        try:  
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['gas'],
+                                    mode='lines',
+                                    name='Gas',
+                                    hovertemplate=('%{y:,.1f}' + ' ' + units_rt['gas']), 
+                                    ),
+                        row=1, col=1, 
+                        secondary_y=True,
+                        )
+        except KeyError: 
+            pass
 
         # MWD Temperature (RT)
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mwd_temp'],
-                                 mode='markers',
-                                 name='MWD Temp (RT)',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_rt['mwd_temp'])
-                                 ),
-                      row=1, col=1, 
-                      secondary_y=True
-                      )
+        try:
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mwd_temp'],
+                                    mode='lines',
+                                    name='MWD Temp (RT)',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_rt['mwd_temp'])
+                                    ),
+                        row=1, col=1, 
+                        secondary_y=True
+                        )
+        except KeyError: 
+            pass 
 
         # Gamma Ray (Mem) - does this make sense on a time plot? 
         # fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['gamma_ray'],
@@ -62,201 +71,257 @@ def create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events):
         #               secondary_y=True
         #               )
 
-        # Block position
-        fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt['block_position'],
-                                 mode='lines',
-                                 name='BPOS',
-                                 hovertemplate=('%{y:.1f}' + ' ' + units_rt['block_position'])
-                                 ),
-                      secondary_y=False,
-                      row=3, col=1
-                      )
+        # Block position]\
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index,
+                                    y=df_rt['block_position'],
+                                    mode='lines',
+                                    name='BPOS',
+                                    hovertemplate=('%{y:.1f}' + ' ' + units_rt['block_position'])
+                                    ),
+                        secondary_y=False,
+                        row=3, col=1
+                        )
+        except KeyError: 
+            pass 
 
         # RPM
-        fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt['rpm'],
-                                 mode='lines',
-                                 name='RPM',
-                                 hovertemplate=('%{y:.0f}' + ' ' + units_rt['rpm'])
-                                 ),
-                      secondary_y=False,
-                      row=3, col=1
-                      )
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index,
+                                    y=df_rt['rpm'],
+                                    mode='lines',
+                                    name='RPM',
+                                    hovertemplate=('%{y:.0f}' + ' ' + units_rt['rpm'])
+                                    ),
+                        secondary_y=False,
+                        row=3, col=1
+                        )
+        except KeyError: 
+            pass 
+
         # Torque
-        fig.add_trace(go.Scatter(x=df_rt.index,
-                                 y=df_rt['torque'],
-                                 mode='lines',
-                                 name='TQ',
-                                 hovertemplate=('%{y:.1f}' + ' ' + units_rt['torque'])
-                                 ),
-                      secondary_y=False,
-                      row=3, col=1
-                      )
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index,
+                                    y=df_rt['torque'],
+                                    mode='lines',
+                                    name='TQ',
+                                    hovertemplate=('%{y:.1f}' + ' ' + units_rt['torque'])
+                                    ),
+                        secondary_y=False,
+                        row=3, col=1
+                        )
+        except KeyError: 
+            pass
 
         # Hookload
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['hookload'],
-                                 mode='lines',
-                                 name='HKLD',
-                                 hovertemplate=('%{y:.0f}' + ' ' + units_rt['hookload'])),
-                      secondary_y=True,
-                      row=3, col=1
-                      )
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['hookload'],
+                                    mode='lines',
+                                    name='HKLD',
+                                    hovertemplate=('%{y:.0f}' + ' ' + units_rt['hookload'])),
+                        secondary_y=True,
+                        row=3, col=1
+                        )
+        except KeyError:
+            pass
 
         # WOB
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['wob'],
-                                 mode='lines',
-                                 name='WOB',
-                                 hovertemplate=('%{y:.1f}' + ' ' + units_rt['wob'])
-                                 ),
-                      secondary_y=False,
-                      row=3, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['wob'],
+                                    mode='lines',
+                                    name='WOB',
+                                    hovertemplate=('%{y:.1f}' + ' ' + units_rt['wob'])
+                                    ),
+                        secondary_y=False,
+                        row=3, col=1
+                        )
+        except KeyError:
+            pass
+        
         # ROP
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['rop'],
-                                 mode='lines',
-                                 name='ROP',
-                                 hovertemplate=('%{y:.0f}' + ' ' + units_rt['rop'])
-                                 ),
-                      secondary_y=False,
-                      row=3, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['rop'],
+                                    mode='lines',
+                                    name='ROP',
+                                    hovertemplate=('%{y:.0f}' + ' ' + units_rt['rop'])
+                                    ),
+                        secondary_y=False,
+                        row=3, col=1
+                        )
+        except KeyError:
+            pass
+        
         # Standpipe pressure
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['spp'],
-                                 mode='lines',
-                                 name='SPPA',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_rt['spp'])
-                                 ),
-                      secondary_y=False,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['spp'],
+                                    mode='lines',
+                                    name='SPPA',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_rt['spp'])
+                                    ),
+                        secondary_y=False,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # Surface backpressure (SBP)
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['sbp'],
-                                 mode='lines',
-                                 name='SBP',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_rt['sbp'])
-                                 ),
-                      secondary_y=False,
-                      # yaxis="",
-                      row=2, col=1
-                      )
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['sbp'],
+                                    mode='lines',
+                                    name='SBP',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_rt['sbp'])
+                                    ),
+                        secondary_y=False,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError: 
+            pass
         
         # Wellhead Pressure
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['whp'],
-                                 mode='lines',
-                                 name='WHP',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_rt['whp'])
-                                 ),
-                      secondary_y=False,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['whp'],
+                                    mode='lines',
+                                    name='WHP',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_rt['whp'])
+                                    ),
+                        secondary_y=False,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # Flow rate (x100)
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mfia_multiplier'],
-                                 mode='lines',
-                                 name='Flow Rate',
-                                 hovertemplate=('%{y:.2f}' + f'x{MFIA_MULTIPLIER} {units_rt["mfia"]}')
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mfia_multiplier'],
+                                    mode='lines',
+                                    name='Flow Rate',
+                                    hovertemplate=('%{y:.2f}' + f'x{MFIA_MULTIPLIER} {units_rt["mfia"]}')
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # Realtime ECD
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ecd_rt'],
-                                 mode='lines',
-                                 name='ECD',
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['ecd_rt'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['ecd_rt'],
+                                    mode='lines',
+                                    name='ECD',
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['ecd_rt'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # ESD_MIN
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_min'],
-                                 mode='markers',
-                                 name='ESD_MIN',
-                                 marker_size=ESD_MARKER_SIZE,
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_min'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_min'],
+                                    mode='markers',
+                                    name='ESD_MIN',
+                                    marker_size=ESD_MARKER_SIZE,
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_min'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
 
         # ESD_MAX
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_max'],
-                                 mode='markers',
-                                 name='ESD_MAX',
-                                 marker_size=ESD_MARKER_SIZE,
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_max'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_max'],
+                                    mode='markers',
+                                    name='ESD_MAX',
+                                    marker_size=ESD_MARKER_SIZE,
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_max'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # ESD_AVG
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_avg'],
-                                 mode='markers',
-                                 name='ESD_AVG',
-                                 marker_size=ESD_MARKER_SIZE,
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_avg'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['esd_avg'],
+                                    mode='markers',
+                                    name='ESD_AVG',
+                                    marker_size=ESD_MARKER_SIZE,
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['esd_avg'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # MW In 
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_in'],
-                                 mode='lines',
-                                 name='MW In',
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['mw_in'])),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_in'],
+                                    mode='lines',
+                                    name='MW In',
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['mw_in'])),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # MW Out
-        fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_out'],
-                                 mode='lines',
-                                 name='MW Out',
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_rt['mw_out'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
+        try:
+            fig.add_trace(go.Scatter(x=df_rt.index, y=df_rt['mw_out'],
+                                    mode='lines',
+                                    name='MW Out',
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_rt['mw_out'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
         
     if df_mem is not None:
         # Memory ECD
-        fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ecd_mem'],
-                                 mode='lines',
-                                 name='Memory ECD',
-                                 hovertemplate=('%{y:.2f}' + ' ' + units_mem['ecd_mem'])
-                                 ),
-                      secondary_y=True,
-                      # yaxis="",
-                      row=2, col=1
-                      )
-
+        try: 
+            fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ecd_mem'],
+                                    mode='lines',
+                                    name='Memory ECD',
+                                    hovertemplate=('%{y:.2f}' + ' ' + units_mem['ecd_mem'])
+                                    ),
+                        secondary_y=True,
+                        # yaxis="",
+                        row=2, col=1
+                        )
+        except KeyError:
+            pass
+        
         # MWD Temperature (Memory)
-        fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['mwd_temp_mem'],
-                                 mode='markers',
-                                 name='MWD Temp (Mem)',
-                                 hovertemplate=('%{y:,.0f}' + ' ' + units_mem['mwd_temp_mem'])
-                                 ),
-                      row=1, col=1, 
-                      secondary_y=True
-                      )
-
+        try:
+            fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['mwd_temp_mem'],
+                                    mode='lines',
+                                    name='MWD Temp (Mem)',
+                                    hovertemplate=('%{y:,.0f}' + ' ' + units_mem['mwd_temp_mem'])
+                                    ),
+                        row=1, col=1, 
+                        secondary_y=True
+                        )
+        except KeyError:
+            pass
+        
     # Add axis titles
     fig.update_yaxes(row=1, col=1, secondary_y=False,
                      title_text=f'Bit Depth ({units_rt["bit_depth"]})', 
@@ -276,7 +341,7 @@ def create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events):
                      title_text=f'ECD/ESD/MW ({units_rt["ecd_rt"]})/Flow x{MFIA_MULTIPLIER} ({units_rt["mfia"]})')
 
     fig.update_yaxes(row=3, col=1, secondary_y=False,
-                     range=[0, 300],
+                    #  range=[0, 300],
                      title_text=(f'BPOS ({units_rt["block_position"]})/RPM/TQ ({units_rt["torque"]})/WOB ({units_rt["wob"]})/ROP ({units_rt["rop"]})'))
 
     fig.update_yaxes(row=3, col=1, secondary_y=True,
@@ -286,7 +351,7 @@ def create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events):
     fig.add_hline(y=MAX_PP_OH, row=2, col=1, secondary_y=True) 
     fig.add_annotation(
         text="Max PP in Open Hole",
-        x=max(df_rt.index.max(), df_mem.index.max()),
+        x=df_rt.index.max(),
         y=MAX_PP_OH,
         yshift=-10, 
         xshift=10,
