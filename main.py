@@ -17,10 +17,10 @@ def main():
     events_filename = get_filepath(config.EVENTS_PATH, config.EVENTS_FILENAME)
 
     df_rt, units_rt = process_rt_data(bpwa_filename)
-    df_mem = process_memory_data(las_filename)
+    df_mem, units_mem = process_memory_data(las_filename)
     df_events = process_events(events_filename)
 
-    fig = create_drilling_plot(df_rt, units_rt, df_mem, df_events)
+    fig = create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events)
     fig.show()
     fig.write_html(os.path.join(
         os.path.dirname(__file__),

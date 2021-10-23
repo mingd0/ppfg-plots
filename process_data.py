@@ -20,12 +20,12 @@ events .csv file.
 def process_memory_data(filename):
     if not filename:
         return
-    df = import_memory_data(filename)
+    df, units = import_memory_data(filename)
     df = clean_data(df)
     df = set_time_index(df, mnem_rt['time'])
     df = convert_index_utc(df)
     df = rename_cols(df, mnem_mem)
-    return df
+    return df, units
 
 
 # Import and clean realtime data from .csv file. Set index to datetime on
@@ -95,7 +95,8 @@ def clean_data(df):
 
 def import_memory_data(filename):
     las = lasio.read(filename)
-    return las.df()
+    units = {key: las.curves[value].unit for key, value in mnem_mem.items()}
+    return las.df(), units
 
 
 def get_filepath(path, filename):

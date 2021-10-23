@@ -9,7 +9,7 @@ Dataframes are generated in process_data.py.
 """
 
 
-def create_drilling_plot(df_rt, units_rt, df_mem, df_events):
+def create_drilling_plot(df_rt, units_rt, df_mem, units_mem, df_events):
 
     # Initialize figure with three subplots and shared x-axis. The second two
     # have secondary axes.
@@ -240,7 +240,8 @@ def create_drilling_plot(df_rt, units_rt, df_mem, df_events):
         fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['ecd_mem'],
                                  mode='lines',
                                  name='Memory ECD',
-                                 hovertemplate='%{y:.2f} ppg'),
+                                 hovertemplate=('%{y:.2f}' + ' ' + units_mem['ecd_mem'])
+                                 ),
                       secondary_y=True,
                       # yaxis="",
                       row=2, col=1
@@ -250,7 +251,8 @@ def create_drilling_plot(df_rt, units_rt, df_mem, df_events):
         fig.add_trace(go.Scatter(x=df_mem.index, y=df_mem['mwd_temp_mem'],
                                  mode='markers',
                                  name='MWD Temp (Mem)',
-                                 hovertemplate='%{y:,.0f}°F'),
+                                 hovertemplate=('%{y:,.0f}' + ' ' + units_mem['mwd_temp_mem'])
+                                 ),
                       row=1, col=1, 
                       secondary_y=True
                       )
@@ -265,7 +267,7 @@ def create_drilling_plot(df_rt, units_rt, df_mem, df_events):
 
     fig.update_yaxes(row=2, col=1, secondary_y=False,
                      title_text=f'Pressure ({units_rt["spp"]})')
-                     
+
     # Use mean ECD to configure axis range
     ecd_mean = round(df_rt['ecd_rt'].mean(), 1)
     fig.update_yaxes(row=2, col=1, secondary_y=True,
