@@ -20,7 +20,7 @@ OUTPUT_FILENAME = 'Isabela-3_12.25inBypassHS_Mem_RT_Data.html'
 TITLE = 'Isabela-3 12-1/4in Bypass Hole Section - RT/MEM Data'
 ESD_MARKER_SIZE = 10
 MAX_PP_OH = 12.6 # Max pore pressure in open hole
-
+MFIA_MULTIPLIER = 100
 """ Mnemonics """
 
 # BPWA
